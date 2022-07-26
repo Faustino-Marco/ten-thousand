@@ -1,5 +1,4 @@
 from collections import Counter
-from curses import pair_content
 import random
 
 class GameLogic:
