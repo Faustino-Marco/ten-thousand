@@ -1,5 +1,6 @@
 from collections import Counter
 import random
+from unicodedata import name
 
 from pip import main
 
@@ -100,38 +101,125 @@ class GameLogic:
       roll.append(str(random.randint(1, 6)))
     
     formatted_roll = " ".join(roll)
-    print(f"*** {formatted_roll} ***")
+    roll_output = print(f"*** {formatted_roll} ***")
     # result = tuple(roll)
     # print(f" *** {result} ***") # TODO get rid of ()
-    # return result 
+    return roll_output 
 
 
 
+def play():
+  choice = invite_to_play()
 
+  if choice == "y":
+    start_game()
+  else:
+    decline_game()
 
-print("Welcome to Ten Thousand")
-print("(y)es to play or (n)o to decline")
-wanna_play = input("> ")
-if wanna_play == "n":
+def invite_to_play():
+  print("Welcome to Ten Thousand")
+  print("(y)es to play or (n)o to decline")
+  wanna_play = input("> ")
+  return wanna_play
+
+def start_game():
+  round_num = 1
+  max_round = 3
+  total_points = 0
+  remaining_dice = 6
+  while round_num <= max_round:
+    total_points += do_round(round_num, remaining_dice)
+    print(f"Total score is {total_points} points")
+    round_num += 1
+
+  print(f"Thanks for playing. You earned {total_points} points")
+
+def decline_game():
   print("OK. Maybe another time")
   exit()
-if wanna_play == "y":
-  print("Starting round 1")
-  GameLogic.roll_dice(6)
-print("Enter dice to keep, or (q)uit:")
-keeps = input("> ")
-if keeps == "q":
-  print("Thanks for playing. You earned 0 points")
-  exit()
-to_bank = keeps.split()
-print(type(to_bank[0]))
-print(to_bank)
-print(len(to_bank))
-int_bank = []
-for i in range(len(to_bank)):
-  int_bank.append(int(to_bank[i]))
-print(int_bank)
-print(type(int_bank[0]))
 
+def do_round(round_num, remaining_dice):
+  remaining_dice = remaining_dice
+  print(f"Starting round {round_num}")
+  roll_display = GameLogic.roll_dice(6)
+  # print(roll_display)
+  kept_dice = offer_to_keep()
+  print(kept_dice)
+  dice_left_after_keep = remaining_dice - len(kept_dice)
+  unbanked = GameLogic.calculate_score(kept_dice)
+  print(unbanked)
+  next_move = roll_bank_quit(unbanked, dice_left_after_keep)
+
+  return next_move
+  
+
+
+def offer_to_keep():
+  print("Enter dice to keep, or (q)uit:")
+  keeps = input("> ")
+  if keeps == "q":
+    print("Thanks for playing. You earned 0 points")
+    exit()
+  to_bank = keeps.split()
+  # print(type(to_bank[0]))
+  # print(to_bank)
+  # print(len(to_bank))
+  int_bank = []
+  for i in range(len(to_bank)):
+    int_bank.append(int(to_bank[i]))
+  # print(int_bank)
+  # print(type(int_bank[0]))
+  return int_bank
+
+def roll_bank_quit(score, dice_left):
+  print(f"You have {score} unbanked points and {dice_left} dice remaining")
+  print("(r)oll again, (b)ank your points or (q)uit:")
+  r_b_q = input("> ")
+  if r_b_q == "q":
+    print("Ok, thanks for playing.")
+    exit()
+  elif r_b_q == "b":
+    print(f"You banked {score} points in round 1")
+    return score
+  elif r_b_q == "r":
+    #roll again? TODO figure out how to roll again
+    pass
+  else:
+    print("That's an invalid response. Game over.")
+    exit()
+
+
+
+
+
+# print("Welcome to Ten Thousand")
+# print("(y)es to play or (n)o to decline")
+# wanna_play = input("> ")
+# if wanna_play == "n":
+#   print("OK. Maybe another time")
+#   exit()
+# if wanna_play == "y":
+#   print("Starting round 1")
+#   GameLogic.roll_dice(6)
+
+# print("Enter dice to keep, or (q)uit:")
+# keeps = input("> ")
+# if keeps == "q":
+#   print("Thanks for playing. You earned 0 points")
+#   exit()
+
+# to_bank = keeps.split()
+# print(type(to_bank[0]))
+# print(to_bank)
+# print(len(to_bank))
+# int_bank = []
+# for i in range(len(to_bank)):
+#   int_bank.append(int(to_bank[i]))
+# print(int_bank)
+# print(type(int_bank[0]))
+
+
+if __name__ == '__main__':
+  play()
 
 
