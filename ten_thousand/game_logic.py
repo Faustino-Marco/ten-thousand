@@ -156,14 +156,9 @@ def offer_to_keep():
     print("Thanks for playing. You earned 0 points")
     exit()
   to_bank = keeps.split()
-  # print(type(to_bank[0]))
-  # print(to_bank)
-  # print(len(to_bank))
   int_bank = []
   for i in range(len(to_bank)):
     int_bank.append(int(to_bank[i]))
-  # print(int_bank)
-  # print(type(int_bank[0]))
   return int_bank
 
 def roll_bank_quit(score, dice_left):
