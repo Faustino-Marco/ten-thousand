@@ -82,11 +82,8 @@ class GameLogic:
       # 3 pair
       pair_count = 0
       for i in range(7):
-        print(i)
         if roll_count[i] == 2:
           pair_count += 1
-          print(f"There's two {i}'s")
-      print(f"Pair Count: {pair_count}")
       if pair_count == 3:
         return 1500
       else:
