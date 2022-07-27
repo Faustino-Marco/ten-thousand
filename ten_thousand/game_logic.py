@@ -1,8 +1,6 @@
 from collections import Counter
 import random
 
-from pip import main
-
 class GameLogic:
   
   def __init__(self):
@@ -81,11 +79,8 @@ class GameLogic:
       # 3 pair
       pair_count = 0
       for i in range(7):
-        print(i)
         if roll_count[i] == 2:
           pair_count += 1
-          print(f"There's two {i}'s")
-      print(f"Pair Count: {pair_count}")
       if pair_count == 3:
         return 1500
       else:
@@ -100,38 +95,95 @@ class GameLogic:
       roll.append(str(random.randint(1, 6)))
     
     formatted_roll = " ".join(roll)
-    print(f"*** {formatted_roll} ***")
+    roll_output = print(f"*** {formatted_roll} ***")
     # result = tuple(roll)
     # print(f" *** {result} ***") # TODO get rid of ()
-    # return result 
+    return roll_output 
 
 
 
+def play():
+  choice = invite_to_play()
+
+  if choice == "y":
+    start_game()
+  else:
+    decline_game()
 
 
-print("Welcome to Ten Thousand")
-print("(y)es to play or (n)o to decline")
-wanna_play = input("> ")
-if wanna_play == "n":
+def invite_to_play():
+  print("Welcome to Ten Thousand")
+  print("(y)es to play or (n)o to decline")
+  wanna_play = input("> ")
+  return wanna_play
+
+
+def start_game():
+  round_num = 1
+  max_round = 3
+  total_points = 0
+  remaining_dice = 6
+  while round_num <= max_round:
+    new_points, dice_left_to_roll = do_round(round_num, remaining_dice)
+    remaining_dice = dice_left_to_roll
+    total_points += new_points
+    print(f"Total score is {total_points} points")
+    round_num += 1
+  print(f"Thanks for playing. You earned {total_points} points")
+
+
+def decline_game():
   print("OK. Maybe another time")
   exit()
-if wanna_play == "y":
-  print("Starting round 1")
-  GameLogic.roll_dice(6)
-print("Enter dice to keep, or (q)uit:")
-keeps = input("> ")
-if keeps == "q":
-  print("Thanks for playing. You earned 0 points")
-  exit()
-to_bank = keeps.split()
-print(type(to_bank[0]))
-print(to_bank)
-print(len(to_bank))
-int_bank = []
-for i in range(len(to_bank)):
-  int_bank.append(int(to_bank[i]))
-print(int_bank)
-print(type(int_bank[0]))
 
+
+def do_round(round_num, remaining_dice):
+  print(f"Starting round {round_num}")
+  roll_display = GameLogic.roll_dice(remaining_dice)
+  # print(roll_display)
+  kept_dice = offer_to_keep()
+  dice_left_after_keep = remaining_dice - len(kept_dice)
+  unbanked = GameLogic.calculate_score(kept_dice)
+  round_score = roll_bank_quit(unbanked, dice_left_after_keep, round_num)
+  round_result = []
+  round_result.append(round_score)
+  round_result.append(dice_left_after_keep)
+  print(round_result)
+  return round_result
+  
+
+def offer_to_keep():
+  print("Enter dice to keep, or (q)uit:")
+  keeps = input("> ")
+  if keeps == "q":
+    print("Thanks for playing. You earned 0 points")
+    exit()
+  to_bank = keeps.split()
+  int_bank = []
+  for i in range(len(to_bank)):
+    int_bank.append(int(to_bank[i]))
+  return int_bank
+
+
+def roll_bank_quit(score, dice_left, round_num):
+  print(f"You have {score} unbanked points and {dice_left} dice remaining")
+  print("(r)oll again, (b)ank your points or (q)uit:")
+  r_b_q = input("> ")
+  if r_b_q == "q":
+    print("Ok, thanks for playing.")
+    exit()
+  elif r_b_q == "b":
+    print(f"You banked {score} points in round {round_num}")
+    return score
+  elif r_b_q == "r":
+    #roll again? TODO figure out how to roll again
+    pass
+  else:
+    print("That's an invalid response. Game over.")
+    exit()
+
+
+if __name__ == '__main__':
+  play()
 
 
