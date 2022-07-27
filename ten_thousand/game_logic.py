@@ -141,10 +141,8 @@ def do_round(round_num, remaining_dice):
   roll_display = GameLogic.roll_dice(6)
   # print(roll_display)
   kept_dice = offer_to_keep()
-  print(kept_dice)
   dice_left_after_keep = remaining_dice - len(kept_dice)
   unbanked = GameLogic.calculate_score(kept_dice)
-  print(unbanked)
   next_move = roll_bank_quit(unbanked, dice_left_after_keep)
 
   return next_move
