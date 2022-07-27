@@ -113,11 +113,13 @@ def play():
   else:
     decline_game()
 
+
 def invite_to_play():
   print("Welcome to Ten Thousand")
   print("(y)es to play or (n)o to decline")
   wanna_play = input("> ")
   return wanna_play
+
 
 def start_game():
   round_num = 1
@@ -125,29 +127,33 @@ def start_game():
   total_points = 0
   remaining_dice = 6
   while round_num <= max_round:
-    total_points += do_round(round_num, remaining_dice)
+    new_points, dice_left_to_roll = do_round(round_num, remaining_dice)
+    remaining_dice = dice_left_to_roll
+    total_points += new_points
     print(f"Total score is {total_points} points")
     round_num += 1
-
   print(f"Thanks for playing. You earned {total_points} points")
+
 
 def decline_game():
   print("OK. Maybe another time")
   exit()
 
+
 def do_round(round_num, remaining_dice):
-  remaining_dice = remaining_dice
   print(f"Starting round {round_num}")
-  roll_display = GameLogic.roll_dice(6)
+  roll_display = GameLogic.roll_dice(remaining_dice)
   # print(roll_display)
   kept_dice = offer_to_keep()
   dice_left_after_keep = remaining_dice - len(kept_dice)
   unbanked = GameLogic.calculate_score(kept_dice)
-  next_move = roll_bank_quit(unbanked, dice_left_after_keep)
-
-  return next_move
+  round_score = roll_bank_quit(unbanked, dice_left_after_keep, round_num)
+  round_result = []
+  round_result.append(round_score)
+  round_result.append(dice_left_after_keep)
+  print(round_result)
+  return round_result
   
-
 
 def offer_to_keep():
   print("Enter dice to keep, or (q)uit:")
@@ -161,7 +167,8 @@ def offer_to_keep():
     int_bank.append(int(to_bank[i]))
   return int_bank
 
-def roll_bank_quit(score, dice_left):
+
+def roll_bank_quit(score, dice_left, round_num):
   print(f"You have {score} unbanked points and {dice_left} dice remaining")
   print("(r)oll again, (b)ank your points or (q)uit:")
   r_b_q = input("> ")
@@ -169,7 +176,7 @@ def roll_bank_quit(score, dice_left):
     print("Ok, thanks for playing.")
     exit()
   elif r_b_q == "b":
-    print(f"You banked {score} points in round 1")
+    print(f"You banked {score} points in round {round_num}")
     return score
   elif r_b_q == "r":
     #roll again? TODO figure out how to roll again
