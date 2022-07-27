@@ -97,10 +97,13 @@ class GameLogic:
     print(f"Rolling {dice} dice...")
     roll = []
     for _ in range(dice):
-      roll.append(random.randint(1, 6))
-    result = tuple(roll)
-    print(f" *** {result} ***") # TODO get rid of ()
-    return result 
+      roll.append(str(random.randint(1, 6)))
+    
+    formatted_roll = " ".join(roll)
+    print(f"*** {formatted_roll} ***")
+    # result = tuple(roll)
+    # print(f" *** {result} ***") # TODO get rid of ()
+    # return result 
 
 
 
@@ -120,5 +123,6 @@ keeps = input("> ")
 if keeps == "q":
   print("Thanks for playing. You earned 0 points")
   exit()
+
 
 
