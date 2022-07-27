@@ -1,8 +1,5 @@
 from collections import Counter
 import random
-from unicodedata import name
-
-from pip import main
 
 class GameLogic:
   
