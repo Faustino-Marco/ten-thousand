@@ -1,5 +1,5 @@
-# LAB - Class 06
-## Project: Ten Thousand (v. 1.1)
+# LAB - (06 - 09)
+## Project: Ten Thousand (v. 2.0)
 #### Author: Faustino Marco Simpliciano
 <hr>
 Command line version of the dice game, 'Ten Thousand.'

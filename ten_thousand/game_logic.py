@@ -1,7 +1,10 @@
 from collections import Counter
 import random
 
+from pip import main
+
 class GameLogic:
+  
   def __init__(self):
     pass
 
@@ -91,10 +94,44 @@ class GameLogic:
 
   @staticmethod
   def roll_dice(dice):
+    print(f"Rolling {dice} dice...")
     roll = []
     for _ in range(dice):
-      roll.append(random.randint(1, 6))
-    print(roll)
-    result = tuple(roll)
-    print(result)
-    return result 
+      roll.append(str(random.randint(1, 6)))
+    
+    formatted_roll = " ".join(roll)
+    print(f"*** {formatted_roll} ***")
+    # result = tuple(roll)
+    # print(f" *** {result} ***") # TODO get rid of ()
+    # return result 
+
+
+
+
+
+print("Welcome to Ten Thousand")
+print("(y)es to play or (n)o to decline")
+wanna_play = input("> ")
+if wanna_play == "n":
+  print("OK. Maybe another time")
+  exit()
+if wanna_play == "y":
+  print("Starting round 1")
+  GameLogic.roll_dice(6)
+print("Enter dice to keep, or (q)uit:")
+keeps = input("> ")
+if keeps == "q":
+  print("Thanks for playing. You earned 0 points")
+  exit()
+to_bank = keeps.split()
+print(type(to_bank[0]))
+print(to_bank)
+print(len(to_bank))
+int_bank = []
+for i in range(len(to_bank)):
+  int_bank.append(int(to_bank[i]))
+print(int_bank)
+print(type(int_bank[0]))
+
+
+
