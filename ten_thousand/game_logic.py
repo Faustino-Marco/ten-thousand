@@ -10,7 +10,7 @@ class GameLogic:
   def calculate_score(roll):
 
     roll_count = Counter(roll)
-
+    running_score = 0
 
     if len(roll) == 0:
       return 0
@@ -172,12 +172,12 @@ def roll_bank_quit(score, dice_left, round_num):
   if r_b_q == "q":
     print("Ok, thanks for playing.")
     exit()
-  elif r_b_q == "b":
+  if r_b_q == "b":
     print(f"You banked {score} points in round {round_num}")
     return score
-  elif r_b_q == "r":
-    #roll again? TODO figure out how to roll again
-    pass
+  if r_b_q == "r":
+    do_round(round_num + 1, dice_left)
+
   else:
     print("That's an invalid response. Game over.")
     exit()
